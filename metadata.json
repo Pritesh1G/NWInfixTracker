@@ -1,0 +1,5 @@
+{
+  "name": "New World Chest Run Tracker",
+  "description": "A daily chest run tracker for the game New World, designed to help players track their elite chest progress with a clean, game-inspired user interface. Progress is saved locally and resets daily.",
+  "requestFramePermissions": []
+}
