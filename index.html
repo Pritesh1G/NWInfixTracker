@@ -64,9 +64,9 @@
           <div class="bg-slate-800/50 border border-slate-700 rounded-lg shadow-lg overflow-hidden">
             <div class="hidden md:flex bg-slate-900/70 border-b border-slate-700 text-left">
               <div class="p-4 uppercase text-sm font-semibold text-slate-400 tracking-wider flex-none w-24 text-center">Completed</div>
-              <div class="p-4 uppercase text-sm font-semibold text-slate-400 tracking-wider flex-auto w-3/12">Name</div> <!-- Reduced to w-3/12 (1/4) -->
-              <div class="p-4 uppercase text-sm font-semibold text-slate-400 tracking-wider flex-auto w-2/12">Zone</div> <!-- Increased to w-2/12 (1/6) -->
-              <div class="p-4 uppercase text-sm font-semibold text-slate-400 tracking-wider flex-auto w-auto">Nearest Shrine</div> <!-- Takes remaining space -->
+              <div class="p-4 uppercase text-sm font-semibold text-slate-400 tracking-wider flex-[2_2_0%]">Name</div>
+              <div class="p-4 uppercase text-sm font-semibold text-slate-400 tracking-wider flex-[3_3_0%]">Zone</div>
+              <div class="p-4 uppercase text-sm font-semibold text-slate-400 tracking-wider flex-[4_4_0%]">Nearest Shrine</div>
             </div>
             <div id="chest-run-list">
               <!-- Rows will be injected by JavaScript -->
@@ -165,118 +165,4 @@
           // Render Table
           chestRunList.innerHTML = ''; // Clear existing list
           chestRuns.forEach((run, index) => {
-            const isLast = index === chestRuns.length - 1;
-            const completedClass = run.completed ? 'completed' : '';
-
-            const rowHTML = `
-              <div class="chest-run-row ${run.completed ? 'bg-slate-800/60' : 'bg-slate-800/30'} hover:bg-slate-700/50 ${!isLast ? 'border-b border-slate-700' : ''}">
-                  <!-- Mobile View -->
-                  <div class="p-4 md:hidden">
-                      <div class="flex justify-between items-start mb-4">
-                          <div>
-                              <div class="font-bold text-lg ${run.completed ? 'text-slate-400 line-through' : 'text-slate-100'}">${run.name}</div>
-                              <div class="text-sm ${run.completed ? 'text-slate-500' : 'text-slate-400'}">${run.subtitle}</div>
-                          </div>
-                          <div class="ml-4 flex-shrink-0">
-                              <label for="checkbox-${run.id}" class="flex justify-center items-center cursor-pointer">
-                                  <input id="checkbox-${run.id}" type="checkbox" data-id="${run.id}" ${run.completed ? 'checked' : ''} class="sr-only peer toggle-checkbox" />
-                                  <div class="relative w-6 h-6 border-2 border-slate-500 rounded-md peer-checked:bg-cyan-500 peer-checked:border-cyan-400 transition-all duration-200">
-                                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-900 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-200 ${run.completed ? 'opacity-100' : 'opacity-0'}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                                          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                                      </svg>
-                                  </div>
-                              </label>
-                          </div>
-                      </div>
-                      <div class="grid grid-cols-[max-content_1fr] gap-x-4 gap-y-2 text-sm">
-                          <div class="font-semibold text-slate-400 text-right">Zone</div>
-                          <div class="${run.completed ? 'text-slate-500' : 'text-slate-300'}">${run.zone}</div>
-                          <div class="font-semibold text-slate-400 text-right">Nearest Shrine</div>
-                          <div class="${run.completed ? 'text-slate-500' : 'text-slate-300'}">${run.shrine}</div>
-                      </div>
-                  </div>
-
-                  <!-- Desktop View -->
-                  <div class="hidden md:flex items-center text-left">
-                      <div class="p-4 flex-none w-24 text-center">
-                          <label for="checkbox-${run.id}-desktop" class="flex justify-center items-center cursor-pointer">
-                              <input id="checkbox-${run.id}-desktop" type="checkbox" data-id="${run.id}" ${run.completed ? 'checked' : ''} class="sr-only peer toggle-checkbox" />
-                              <div class="relative w-6 h-6 border-2 border-slate-500 rounded-md peer-checked:bg-cyan-500 peer-checked:border-cyan-400 transition-all duration-200">
-                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-900 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-200 ${run.completed ? 'opacity-100' : 'opacity-0'}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                                  </svg>
-                              </div>
-                          </label>
-                      </div>
-                      <div class="p-4 flex-auto w-2/5">
-                          <div class="font-bold text-lg ${run.completed ? 'text-slate-400 line-through' : 'text-slate-100'}">${run.name}</div>
-                          <div class="text-sm ${run.completed ? 'text-slate-500' : 'text-slate-400'}">${run.subtitle}</div>
-                      </div>
-                      <div class="p-4 flex-auto w-1/5 ${run.completed ? 'text-slate-500' : 'text-slate-300'}">
-                          ${run.zone}
-                      </div>
-                      <div class="p-4 flex-auto w-2/5 ${run.completed ? 'text-slate-500' : 'text-slate-300'}">
-                          ${run.shrine}
-                      </div>
-                  </div>
-              </div>
-            `;
-            chestRunList.insertAdjacentHTML('beforeend', rowHTML);
-          });
-        }
-
-        function handleToggleComplete(id) {
-          const run = chestRuns.find(r => r.id === id);
-          if (run) {
-            run.completed = !run.completed;
-          }
-          saveState();
-          render();
-        }
-        
-        function handleReset() {
-            chestRuns.forEach(run => run.completed = false);
-            saveState();
-            render();
-        }
-        
-        function init() {
-            try {
-                const savedDataRaw = localStorage.getItem('chestRunData');
-                if (savedDataRaw) {
-                    const savedData = JSON.parse(savedDataRaw);
-                    const today = new Date().toISOString().split('T')[0];
-                    if (savedData.date === today) {
-                        chestRuns = savedData.runs;
-                    } else {
-                        // Date has changed, reset progress
-                        chestRuns = CHEST_RUN_LOCATIONS.map(run => ({ ...run, completed: false }));
-                    }
-                } else {
-                    // No saved data, initialize
-                    chestRuns = CHEST_RUN_LOCATIONS.map(run => ({ ...run, completed: false }));
-                }
-            } catch (error) {
-                console.error("Failed to load or parse from localStorage", error);
-                chestRuns = CHEST_RUN_LOCATIONS.map(run => ({ ...run, completed: false }));
-            }
-            render();
-        }
-
-        // Event Listeners
-        resetButton.addEventListener('click', handleReset);
-        
-        chestRunList.addEventListener('change', (event) => {
-            if (event.target.classList.contains('toggle-checkbox')) {
-                const id = event.target.dataset.id;
-                handleToggleComplete(id);
-            }
-        });
-
-        // Initialize the app
-        init();
-      });
-    </script>
-</body>
-</html>
-
+            const isLast = index === chest
